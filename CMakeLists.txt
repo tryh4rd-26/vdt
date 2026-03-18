@@ -3,7 +3,7 @@
 #-----------------------------------------------------------------------
 # Project configuration
 #
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(vdt)
 
 set(VDT_VERSION_MAJOR 0)
@@ -31,10 +31,17 @@ option(VDT_ENABLE_TESTING "Build unit and performance tests" ON)
 option(VDT_ENABLE_PRELOAD "Create symbols to preload the library" OFF)
 
 # - Instruction set choices
+# Default SIMD options depend on the target architecture.
+set(_vdt_default_sse ON)
+set(_vdt_default_neon OFF)
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm64|aarch64|ARM64|AARCH64|arm|ARM)")
+  set(_vdt_default_sse OFF)
+endif()
+
 option(VDT_WITH_AVX  "Build with AVX instruction set" OFF)
 option(VDT_WITH_AVX2 "Build with AVX2 instruction set" OFF)
-option(VDT_WITH_SSE  "Build with SSE instruction set" ON)
-option(VDT_WITH_NEON "Build with NEON instruction set" OFF)
+option(VDT_WITH_SSE  "Build with SSE instruction set" ${_vdt_default_sse})
+option(VDT_WITH_NEON "Build with NEON instruction set" ${_vdt_default_neon})
 
 # - Vc library option
 option(VDT_WITH_VC "Build with Vc library" OFF)
@@ -84,7 +91,12 @@ endif()
 # process options that can be processed here
 # SIMD instructions set
 if(VDT_WITH_NEON)
-  set(SSE_AVX "-mfpu=neon ")
+  # On AArch64, NEON is part of the base ISA and does not need -mfpu.
+  if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm64|aarch64|ARM64|AARCH64)")
+    set(SSE_AVX "")
+  else()
+    set(SSE_AVX "-mfpu=neon ")
+  endif()
 else()
   if(VDT_WITH_SSE AND (NOT (VDT_WITH_AVX OR VDT_WITH_AVX2)))
     set(SSE_AVX "-msse")
@@ -163,6 +175,9 @@ elseif(COMPILER_IS_OLD_GCC)
 endif()
 
 set(WARNING_FLAGS "-W -Wall -Werror -Wno-error=unused-parameter")
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  set(WARNING_FLAGS "${WARNING_FLAGS} -Wno-error=nan-infinity-disabled")
+endif()
 
 set(COMMON_FLAGS "${INTEL_SVML_FLAGS} ${SSE_AVX} ${INLINE_OPT} ${WARNING_FLAGS}")
 set(LIB_FLAGS "${VERBOSITY_OPT} ${VECT_OPT} ${VECTORIZER_VERBOSITY} ${COMMON_FLAGS}")

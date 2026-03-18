@@ -21,7 +21,7 @@ int main(){
 	// Test the FcnResponse in double precision
 	std::string dpofilename("test_dpfunctionComparison.txt");
 	randomPool<double> dpRandomPool(100,1000,size);
-	fcnResponse<double> dpLogResp("Log",dpRandomPool.getNumbers(), (vdth::dpdpfunction) log);
+	fcnResponse<double> dpLogResp("Log",dpRandomPool.getNumbers(), vdth::dpdpfunction(static_cast<double(*)(double)>(std::log)));
     fcnResponse<double> dpFastLogResp("Fast Log",dpRandomPool.getNumbers(), (vdth::dpdpfunction) vdt::fast_log);
     fcnComparison<double> dpLogComp("Log - libmVSvdt",
                                     dpRandomPool.getNumbers(),
@@ -37,7 +37,7 @@ int main(){
 	// Test the FcnResponse in single precision
 	std::string spofilename("test_spfunctionComparison.txt");
 	randomPool<float> spRandomPool(1,1000,size);
-	fcnResponse<float> spLogResp("Logf",spRandomPool.getNumbers(), (vdth::spspfunction) logf);
+	fcnResponse<float> spLogResp("Logf",spRandomPool.getNumbers(), vdth::spspfunction(static_cast<float(*)(float)>(std::log)));
     fcnResponse<float> spFastLogResp("Fast Logf",spRandomPool.getNumbers(), (vdth::spspfunction) vdt::fast_logf);
     fcnComparison<float> spLogComp("Logf - libmVSvdt",
                                     spRandomPool.getNumbers(),
@@ -56,7 +56,7 @@ int main(){
 	fcnResponse2D<float> spLogResp2D("Atan2f",
 									 spRandomPool2D.getNumbersX(),
 									 spRandomPool2D.getNumbersY(),
-									 (vdth::spsp2function) atan2f);
+									 vdth::spsp2function(static_cast<float(*)(float, float)>(std::atan2)));
     fcnResponse2D<float> spFastLogResp2D("Fast Atan2f",
     								spRandomPool2D.getNumbersX(),
     								spRandomPool2D.getNumbersY(),

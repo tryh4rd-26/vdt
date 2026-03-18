@@ -8,6 +8,7 @@
 #include "vdtdiag_fcnPerformance.h"
 #include "vdtMath.h"
 #include "vdtdiag_helper.h"
+#include <cmath>
 
 #include <iostream>
   
@@ -24,7 +25,7 @@ int main(){
     // Test the FcnResponse in double precision
     fcnPerformance<double> dpExpPerf("Exp",
                                      dpRandomPool.getNumbers(), 
-                                    (vdth::dpdpfunction) exp,repetitions);
+                                    vdth::dpdpfunction(static_cast<double(*)(double)>(std::exp)),repetitions);
     dpExpPerf.print();
 
     fcnPerformance<double> dpFastExpPerf("Fast Exp",
@@ -49,7 +50,7 @@ int main(){
     randomPool<float> spRandomPool(-500,500,size);
     fcnPerformance<float> spExpPerf("Expf",
                                           spRandomPool.getNumbers(), 
-                                          (vdth::spspfunction) expf,repetitions);
+                                          vdth::spspfunction(static_cast<float(*)(float)>(std::exp)),repetitions);
     spExpPerf.print();
 
     fcnPerformance<float> spFastExpPerf("Fast Expf",

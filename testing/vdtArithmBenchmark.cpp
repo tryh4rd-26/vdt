@@ -131,7 +131,7 @@ int main(int argc, char **argv){
 	// Add atan2
 	std::cout << " - Processing atan2 (all flavours)\n";
 	saveResponses2D<double,vdth::dpdp2function> ("Atan2",
-    		atan2,
+	    	static_cast<double(*)(double, double)>(std::atan2),
     		spool2D->getNumbersX(),spool2D->getNumbersY(),
     		nick);
     saveResponses2D<double,vdth::dpdp2function> ("Fast_Atan2",

@@ -63,7 +63,7 @@ void getFunctionTuples(	std::vector<genfpfcn2D_tuple<double>>* fcn_tuples,
     fcn_tuples->clear();
 
     fcn_tuples->push_back(genfpfcn2D_tuple<double>( "Identity2D", identity2D, moneone2Pool.getNumbersX(), moneone2Pool.getNumbersY() ));
-    fcn_tuples->push_back(genfpfcn2D_tuple<double>( "Atan2", atan2, moneone2Pool.getNumbersX(), moneone2Pool.getNumbersY() ));
+    fcn_tuples->push_back(genfpfcn2D_tuple<double>( "Atan2", static_cast<double(*)(double, double)>(std::atan2), moneone2Pool.getNumbersX(), moneone2Pool.getNumbersY() ));
     fcn_tuples->push_back(genfpfcn2D_tuple<double>( "Fast_Atan2", fast_atan2, moneone2Pool.getNumbersX(), moneone2Pool.getNumbersY() ));
 
 }
@@ -73,7 +73,7 @@ void getFunctionTuples(	std::vector<genfpfcn2D_tuple<float>>* fcn_tuples,
     fcn_tuples->clear();
 
     fcn_tuples->push_back(genfpfcn2D_tuple<float>( "Identity2Df", identity2Df, moneone2Pool.getNumbersX(), moneone2Pool.getNumbersY() ));
-    fcn_tuples->push_back(genfpfcn2D_tuple<float>( "Atan2f", atan2f, moneone2Pool.getNumbersX(), moneone2Pool.getNumbersY() ));
+    fcn_tuples->push_back(genfpfcn2D_tuple<float>( "Atan2f", static_cast<float(*)(float, float)>(std::atan2), moneone2Pool.getNumbersX(), moneone2Pool.getNumbersY() ));
     fcn_tuples->push_back(genfpfcn2D_tuple<float>( "Fast_Atan2f", fast_atan2f, moneone2Pool.getNumbersX(), moneone2Pool.getNumbersY() ));
 
 }
@@ -109,14 +109,14 @@ void getFunctionTuples(	std::vector<genfpfcn_tuple<double>>* fcn_tuples,
     fcn_tuples->clear();
 
     fcn_tuples->push_back(genfpfcn_tuple<double>( "Identity", identity, symmetricrPool.getNumbers() ));
-    fcn_tuples->push_back(genfpfcn_tuple<double>( "Exp", exp, expPool.getNumbers() ));
-    fcn_tuples->push_back(genfpfcn_tuple<double>( "Log", log, positiverPool.getNumbers() ));
-    fcn_tuples->push_back(genfpfcn_tuple<double>( "Sin", sin, symmetricrPool.getNumbers() ));
-    fcn_tuples->push_back(genfpfcn_tuple<double>( "Cos", cos, symmetricrPool.getNumbers() ));
-    fcn_tuples->push_back(genfpfcn_tuple<double>( "Tan", tan, symmetricrPool.getNumbers() ));
-    fcn_tuples->push_back(genfpfcn_tuple<double>( "Asin", asin, mone2onerPool.getNumbers() ));
-    fcn_tuples->push_back(genfpfcn_tuple<double>( "Acos", acos, mone2onerPool.getNumbers() )); 
-    fcn_tuples->push_back(genfpfcn_tuple<double>( "Atan", atan, symmetricrPool.getNumbers() ));
+    fcn_tuples->push_back(genfpfcn_tuple<double>( "Exp", static_cast<double(*)(double)>(std::exp), expPool.getNumbers() ));
+    fcn_tuples->push_back(genfpfcn_tuple<double>( "Log", static_cast<double(*)(double)>(std::log), positiverPool.getNumbers() ));
+    fcn_tuples->push_back(genfpfcn_tuple<double>( "Sin", static_cast<double(*)(double)>(std::sin), symmetricrPool.getNumbers() ));
+    fcn_tuples->push_back(genfpfcn_tuple<double>( "Cos", static_cast<double(*)(double)>(std::cos), symmetricrPool.getNumbers() ));
+    fcn_tuples->push_back(genfpfcn_tuple<double>( "Tan", static_cast<double(*)(double)>(std::tan), symmetricrPool.getNumbers() ));
+    fcn_tuples->push_back(genfpfcn_tuple<double>( "Asin", static_cast<double(*)(double)>(std::asin), mone2onerPool.getNumbers() ));
+    fcn_tuples->push_back(genfpfcn_tuple<double>( "Acos", static_cast<double(*)(double)>(std::acos), mone2onerPool.getNumbers() )); 
+    fcn_tuples->push_back(genfpfcn_tuple<double>( "Atan", static_cast<double(*)(double)>(std::atan), symmetricrPool.getNumbers() ));
     fcn_tuples->push_back(genfpfcn_tuple<double>( "Isqrt", isqrt, positiverPool.getNumbers() ));    
     fcn_tuples->push_back(genfpfcn_tuple<double>( "Inverse", inv, symmetricrPool.getNumbers() ));    
 
